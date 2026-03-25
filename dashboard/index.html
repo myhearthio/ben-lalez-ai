@@ -1,12 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ben Lalez AI Marketing OS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ben Lalez AI Marketing OS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background: #f7f5f2; color: #1a1a1a; font-family: 'DM Sans', sans-serif; font-size: 13px; min-height: 100vh; }
+.topbar { background: #fff; border-bottom: 1px solid #e8e4df; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; }
+.brand { display: flex; align-items: baseline; gap: 12px; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.02em; }
+.brand-sub { font-size: 11px; color: #999; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 400; }
+.topbar-right { display: flex; align-items: center; gap: 20px; }
+.live-badge { display: flex; align-items: center; gap: 6px; background: #f0faf4; border: 1px solid #b8e8ca; border-radius: 20px; padding: 5px 12px; font-size: 11px; color: #1a7a40; font-weight: 500; letter-spacing: 0.08em; }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.time { font-size: 12px; color: #999; font-variant-numeric: tabular-nums; }
+.nav { background: #fff; border-bottom: 1px solid #e8e4df; padding: 0 32px; display: flex; gap: 4px; }
+.nav-item { padding: 12px 16px; font-size: 12px; font-weight: 500; color: #999; cursor: pointer; border-bottom: 2px solid transparent; letter-spacing: 0.05em; transition: all 0.2s; }
+.nav-item:hover { color: #1a1a1a; }
+.nav-item.active { color: #1a1a1a; border-bottom-color: #c8a155; }
+.main { padding: 28px 32px; }
+.alert { background: #fffbf0; border: 1px solid #f0d87a; border-left: 4px solid #c8a155; border-radius: 8px; padding: 14px 20px; display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.alert-icon { font-size: 18px; }
+.alert-text { flex: 1; }
+.alert-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px; }
+.alert-desc { font-size: 12px; color: #666; }
+.alert-btn { background: #c8a155; color: #fff; border: none; padding: 7px 16px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+.kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
+.kpi { background: #fff; border: 1px solid #e8e4df; border-radius: 10px; padding: 18px 20px; position: relative; overflow: hidden; }
+.kpi::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.kpi.gold::after { background: #c8a155; }
+.kpi.green::after { background: #22c55e; }
+.kpi.blue::after { background: #3b82f6; }
+.kpi.teal::after { background: #14b8a6; }
+.kpi.purple::after { background: #8b5cf6; }
+.kpi.orange::after { background: #f97316; }
+.kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: #999; font-weight: 500; margin-bottom: 10px; }
+.kpi-value { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 6px; }
+.kpi-delta { font-size: 11px; color: #22c55e; font-weight: 500; }
+.kpi-delta.down { color: #ef4444; }
+.two-col { display: grid; grid-template-columns: 1fr 320px; gap: 16px; margin-bottom: 16px; }
+.card { background: #fff; border: 1px solid #e8e4df; border-radius: 10px; overflow: hidden; }
+.card-header { padding: 16px 20px; border-bottom: 1px solid #e8e4df; display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #999; font-weight: 500; }
+.card-badge { font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 600; letter-spacing: 0.06em; }
+.badge-green { background: #f0faf4; color: #1a7a40; border: 1px solid #b8e8ca; }
+.badge-gold { background: #fffbf0; color: #92620a; border: 1px solid #f0d87a; }
+.badge-blue { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.card-body { padding: 20px; }
+.agent-item { display: flex; align-items: center; justify-content: space-between; padding: 11px 20px; border-bottom: 1px solid #f5f3f0; transition: background 0.15s; }
+.agent-item:hover { background: #fafaf9; }
+.agent-item:last-child { border-bottom: none; }
+.agent-left { display: flex; align-items: center; gap: 10px; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-active { background: #22c55e; animation: pulse 3s infinite; }
+.dot-running { background: #f59e0b; animation: pulse 1.5s infinite; }
+.dot-idle { background: #d1d5db; }
+.agent-name { font-size: 12px; font-weight: 500; color: #1a1a1a; }
+.agent-meta { font-size: 11px; color: #999; margin-top: 1px; }
+.model-tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
+.model-opus { background: #f5f3ff; color: #6d28d9; }
+.model-sonnet { background: #eff6ff; color: #1d4ed8; }
+.model-haiku { background: #f0fdf4; color: #166534; }
+.feed-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #f5f3f0; }
+.feed-item:last-child { border-bottom: none; }
+.feed-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; background: #f7f5f2; }
+.feed-title { font-size: 12px; color: #1a1a1a; line-height: 1.5; margin-bottom: 4px; font-weight: 500; }
+.feed-meta { font-size: 11px; color: #999; display: flex; gap: 8px; align-items: center; }
+.feed-status { font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: 600; }
+.fs-live { background: #f0faf4; color: #1a7a40; }
+.fs-queued { background: #eff6ff; color: #1d4ed8; }
+.fs-review { background: #fffbf0; color: #92620a; }
+.prog-wrap { margin-bottom: 12px; }
+.prog-label { display: flex; justify-content: space-between; font-size: 11px; color: #666; margin-bottom: 5px; }
+.prog-label span:last-child { font-weight: 600; color: #1a1a1a; }
+.prog-track { height: 5px; background: #f0ede8; border-radius: 3px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 3px; }
+.bottom-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px; }
+.rep-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #f5f3f0; font-size: 12px; }
+.rep-row:last-child { border-bottom: none; }
+.rep-source { font-weight: 500; color: #1a1a1a; }
+.rep-rating { color: #c8a155; letter-spacing: 0.05em; font-size: 11px; }
+.rep-score { font-weight: 600; color: #1a1a1a; }
+.rep-delta { font-size: 11px; color: #22c55e; font-weight: 500; }
+.video-item { display: flex; align-items: center; gap: 14px; padding: 12px; background: #fafaf9; border: 1px solid #e8e4df; border-radius: 8px; margin-bottom: 8px; }
+.video-thumb { width: 52px; height: 36px; background: #f0ede8; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.video-title { font-size: 12px; font-weight: 500; color: #1a1a1a; margin-bottom: 3px; }
+.video-meta { font-size: 11px; color: #999; }
+.mini-prog { height: 4px; background: #e8e4df; border-radius: 2px; margin-top: 6px; overflow: hidden; }
+.mini-fill { height: 100%; border-radius: 2px; background: #c8a155; }
+.section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: #bbb; font-weight: 500; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #f0ede8; }
+.insight { background: #fffbf0; border: 1px solid #f0d87a; border-radius: 8px; padding: 14px 16px; font-size: 12px; color: #666; line-height: 1.7; margin-top: 12px; }
+.insight strong { color: #1a1a1a; }
+</style>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-name">Ben Lalez Team</div>
+    <div class="brand-sub">AI Marketing OS</div>
+  </div>
+  <div class="topbar-right">
+    <div class="live-badge"><div class="live-dot"></div>8 Agents Active</div>
+    <div class="time" id="clock">--:-- CST</div>
+  </div>
+</div>
+<div class="nav">
+  <div class="nav-item active">Overview</div>
+  <div class="nav-item">Content</div>
+  <div class="nav-item">Paid Ads</div>
+  <div class="nav-item">Leads</div>
+  <div class="nav-item">Reputation</div>
+  <div class="nav-item">Video</div>
+  <div class="nav-item">Intelligence</div>
+</div>
+<div class="main">
+  <div class="alert">
+    <div class="alert-icon">&#9889;</div>
+    <div class="alert-text">
+      <div class="alert-title">Action Required — Paid Ads Agent</div>
+      <div class="alert-desc">3 underperforming ad sets flagged (CTR &lt;0.8%). Recommendation: pause and reallocate $2,400 to top performer.</div>
+    </div>
+    <button class="alert-btn">Review &#8594;</button>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi gold"><div class="kpi-label">Leads This Month</div><div class="kpi-value">347</div><div class="kpi-delta">&#8593; 22% vs last month</div></div>
+    <div class="kpi green"><div class="kpi-label">Content Published</div><div class="kpi-value">84</div><div class="kpi-delta">&#8593; 41% automated</div></div>
+    <div class="kpi blue"><div class="kpi-label">Ad Spend</div><div class="kpi-value">$18.4K</div><div class="kpi-delta">&#8595; 8% cost per lead</div></div>
+    <div class="kpi teal"><div class="kpi-label">Website Conv.</div><div class="kpi-value">4.7%</div><div class="kpi-delta">&#8593; 0.9pts this month</div></div>
+    <div class="kpi purple"><div class="kpi-label">GMB Views</div><div class="kpi-value">12.2K</div><div class="kpi-delta">&#8593; 34% month over month</div></div>
+    <div class="kpi orange"><div class="kpi-label">Avg. Review</div><div class="kpi-value">4.91</div><div class="kpi-delta">&#8593; 12 new this month</div></div>
+  </div>
+  <div class="two-col">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Content Published Today</div><div class="card-badge badge-green">8 Today</div></div>
+        <div class="card-body" style="padding:8px 20px;">
+          <div class="feed-item"><div class="feed-icon">&#9997;&#65039;</div><div><div class="feed-title">Blog: "2026 Lincoln Park Market Update — Q1 Deep Dive"</div><div class="feed-meta"><span>Blog Agent · Sonnet</span><span class="feed-status fs-live">Published</span></div></div></div>
+          <div class="feed-item"><div class="feed-icon">&#128241;</div><div><div class="feed-title">IG Carousel: "5 Things Buyers Miss in Chicago Market"</div><div class="feed-meta"><span>Social Agent · Haiku</span><span class="feed-status fs-queued">Scheduled 2PM</span></div></div></div>
+          <div class="feed-item"><div class="feed-icon">&#128231;</div><div><div class="feed-title">Newsletter: March Edition — Buyer Segment</div><div class="feed-meta"><span>Newsletter Agent · Sonnet</span><span class="feed-status fs-review">Needs Review</span></div></div></div>
+          <div class="feed-item"><div class="feed-icon">&#128205;</div><div><div class="feed-title">GMB: 3 posts published + 2 review responses drafted</div><div class="feed-meta"><span>GMB Agent · Haiku</span><span class="feed-status fs-review">Review Responses</span></div></div></div>
+          <div class="feed-item"><div class="feed-icon">&#128269;</div><div><div class="feed-title">LLM Optimization: 12 pages refreshed for Perplexity/GPT</div><div class="feed-meta"><span>LLM Agent · Sonnet</span><span class="feed-status fs-live">Complete</span></div></div></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Conversion Rates</div><div class="card-badge badge-green">Live</div></div>
+          <div class="card-body">
+            <div class="prog-wrap"><div class="prog-label"><span>Homepage &#8594; Lead</span><span>4.7%</span></div><div class="prog-track"><div class="prog-fill" style="width:47%;background:#22c55e"></div></div></div>
+            <div class="prog-wrap"><div class="prog-label"><span>Listing &#8594; Inquiry</span><span>6.2%</span></div><div class="prog-track"><div class="prog-fill" style="width:62%;background:#3b82f6"></div></div></div>
+            <div class="prog-wrap"><div class="prog-label"><span>Blog &#8594; Email</span><span>2.1%</span></div><div class="prog-track"><div class="prog-fill" style="width:21%;background:#c8a155"></div></div></div>
+            <div class="prog-wrap"><div class="prog-label"><span>Chat Bot Conv.</span><span>31%</span></div><div class="prog-track"><div class="prog-fill" style="width:62%;background:#14b8a6"></div></div></div>
+            <div class="insight" style="margin-top:10px;font-size:11px;">CRO Agent last edit: <strong>2h ago</strong> — Hero headline A/B test running</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Paid Acquisition</div><div class="card-badge badge-blue">Optimizing</div></div>
+          <div class="card-body">
+            <div class="prog-wrap"><div class="prog-label"><span>Google Search</span><span style="color:#22c55e">4.2x ROAS</span></div><div class="prog-track"><div class="prog-fill" style="width:84%;background:#22c55e"></div></div></div>
+            <div class="prog-wrap"><div class="prog-label"><span>Meta / Instagram</span><span style="color:#3b82f6">3.1x ROAS</span></div><div class="prog-track"><div class="prog-fill" style="width:62%;background:#3b82f6"></div></div></div>
+            <div class="prog-wrap"><div class="prog-label"><span>YouTube Pre-roll</span><span style="color:#c8a155">2.4x ROAS</span></div><div class="prog-track"><div class="prog-fill" style="width:48%;background:#c8a155"></div></div></div>
+            <div class="insight" style="margin-top:10px;font-size:11px;color:#ef4444;background:#fff5f5;border-color:#fecaca;">&#9888; 3 ad sets flagged for pause — awaiting approval</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Agent Status</div><div class="card-badge badge-green">8 / 8 Active</div></div>
+      <div>
+        <div class="agent-item"><div class="agent-left"><div class="status-dot dot-running"></div><div><div class="agent-name">Master Orchestrator</div><div class="agent-meta">Routing 4 tasks</div></div></div><span class="model-tag model-opus">Opus</span></div>
+        <div class="agent-item"><div class="agent-left"><div class="status-dot dot-active"></div><div><div class="agent-name">Lead Scoring</div><div class="agent-meta">12 leads scored today</div></div></div><span class="model-tag model-sonnet">Sonnet</span></div>
+        <div class="agent-item"><div class="agent-left"><div class="status-dot dot-active"></div><div><div class="agent-name">Referral Agent</div><div class="agent-meta">5 outreach drafted</div></div></div><span class="model-tag model-sonnet">Sonnet</span></div>
+        <div class="agent-item"><div class="agent-left"><div class="status-dot dot-running"></div><div><div class="agent-name">Blog + SEO</div><div class="agent-meta">Writing draft now</div></div></div><span class="model-tag model-sonnet">Sonnet</span></div>
+        <div class="agent-item"><div class="agent-left"><div class="status-dot dot-active"></div><div><div class="agent-name">Email Nurture</div><div class="agent-meta">3 sequences running</div></div></div><span class="model-tag model-sonnet">Sonnet</span></div>
+        <div class="agent-item"><div class="agent-left"><div class="status-dot dot-active"></div><div><div class="agent-name">Paid Ads</div><div class="agent-meta">Flag — review needed</div></div></div><span class="model-tag model-sonnet">Sonnet</span></div>
+        <div class="agent-item"><div class="agent-left"><div class="status-dot dot-active"></div><div><div class="agent-name">GMB + Reputation</div><div class="agent-meta">3 posts today</div></div></div><span class="model-tag model-haiku">Haiku</span></div>
+        <div class="agent-item"><div class="agent-left"><div class="status-dot dot-active"></div><div><div class="agent-name">Intelligence</div><div class="agent-meta">Weekly research running</div></div></div><span class="model-tag model-sonnet">Sonnet</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Reputation</div><div class="card-badge badge-green">All Clear</div></div>
+      <div class="card-body">
+        <div class="rep-row"><span class="rep-source">Google</span><span class="rep-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rep-score">4.9 · 214</span><span class="rep-delta">+3 this week</span></div>
+        <div class="rep-row"><span class="rep-source">Zillow</span><span class="rep-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rep-score">4.8 · 88</span><span class="rep-delta">+1 this week</span></div>
+        <div class="rep-row"><span class="rep-source">Yelp</span><span class="rep-rating">&#9733;&#9733;&#9733;&#9733;&#9734;</span><span class="rep-score">4.5 · 31</span><span class="rep-delta">—</span></div>
+        <div class="rep-row"><span class="rep-source">Facebook</span><span class="rep-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rep-score">4.9 · 67</span><span class="rep-delta">+2 this week</span></div>
+        <div class="insight">Sentiment: <strong>97% positive</strong> · 0 flags this week</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Weekly Intelligence Brief</div><div class="card-badge badge-gold">Monday Report</div></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div style="background:#fafaf9;border:1px solid #e8e4df;border-radius:6px;padding:12px;">
+            <div style="font-size:10px;color:#999;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">LLM Visibility</div>
+            <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#c8a155;">78/100</div>
+            <div style="font-size:11px;color:#22c55e;">&#8593; 6pts this week</div>
+          </div>
+          <div style="background:#fafaf9;border:1px solid #e8e4df;border-radius:6px;padding:12px;">
+            <div style="font-size:10px;color:#999;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Content Velocity</div>
+            <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#1a1a1a;">2.8x</div>
+            <div style="font-size:11px;color:#999;">vs Chicago avg</div>
+          </div>
+        </div>
+        <div class="insight"><strong>Top win this week:</strong> Lincoln Park market update generated 34 leads in 48hrs — 3x normal. Blog agent now prioritizing neighborhood-specific content across all Chicago zip codes.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Video Production</div><div class="card-badge badge-gold">3 In Queue</div></div>
+      <div class="card-body">
+        <div class="video-item"><div class="video-thumb">&#127916;</div><div style="flex:1;"><div class="video-title">Ben Avatar: March Market Update (60s)</div><div class="video-meta">HeyGen · ElevenLabs voice</div><div class="mini-prog"><div class="mini-fill" style="width:78%"></div></div></div><div style="font-size:11px;color:#c8a155;font-weight:600;">78%</div></div>
+        <div class="video-item"><div class="video-thumb">&#127969;</div><div style="flex:1;"><div class="video-title">Listing Video: 2847 N. Orchard St</div><div class="video-meta">Runway · MLS photos</div><div class="mini-prog"><div class="mini-fill" style="width:40%;background:#3b82f6"></div></div></div><div style="font-size:11px;color:#3b82f6;font-weight:600;">40%</div></div>
+        <div class="video-item"><div class="video-thumb">&#128202;</div><div style="flex:1;"><div class="video-title">Ben Avatar: Rate Watch Weekly (30s)</div><div class="video-meta">HeyGen · TikTok + Reels</div><div class="mini-prog"><div class="mini-fill" style="width:5%;background:#14b8a6"></div></div></div><div style="font-size:11px;color:#999;font-weight:600;">Queued</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function updateClock(){var n=new Date();var c=new Date(n.toLocaleString('en-US',{timeZone:'America/Chicago'}));var h=String(c.getHours()).padStart(2,'0');var m=String(c.getMinutes()).padStart(2,'0');document.getElementById('clock').textContent=h+':'+m+' CST';}
+updateClock();setInterval(updateClock,1000);
+document.querySelectorAll('.nav-item').forEach(function(item){item.addEventListener('click',function(){document.querySelectorAll('.nav-item').forEach(function(i){i.classList.remove('active')});this.classList.add('active');});});
+</script>
 </body>
-</html>
+  </html>
