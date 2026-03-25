@@ -1,0 +1,6 @@
+FROM node:22-slim
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+COPY agents/intelligence/ ./agents/intelligence/
+CMD ["node", "agents/intelligence/index.js", "daemon"]

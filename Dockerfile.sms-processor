@@ -1,0 +1,11 @@
+FROM node:22-slim
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+
+COPY agents/notifications/ ./agents/notifications/
+
+# Process pending SMS notifications every 60 seconds
+CMD ["node", "-e", "import('./agents/notifications/sms.js').then(m => { const run = () => m.processPendingNotifications().catch(e => console.error(e)); run(); setInterval(run, 60000); })"]
