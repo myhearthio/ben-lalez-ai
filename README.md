@@ -119,3 +119,4 @@ railway link
 | Facebook | `FACEBOOK_PAGE_ID` | GMB Agent |
 | Facebook | `FACEBOOK_PAGE_ACCESS_TOKEN` | GMB Agent |
 | Serper (optional) | `SERPER_API_KEY` | Intelligence |
+# Dashboard fix: use Dockerfile.dashboard
