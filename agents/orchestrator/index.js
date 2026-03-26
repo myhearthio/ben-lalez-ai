@@ -5,10 +5,10 @@ import { toolDefinitions, executeTool } from "./tools.js";
 import { logAction } from "./lib/supabase.js";
 
 config({ path: resolve(import.meta.dirname, "../../.env") });
+
 const anthropic = new Anthropic();
 
 const SYSTEM_PROMPT = `You are the Master Orchestrator for the Ben Lalez real estate team AI Marketing OS at Compass in Chicago.
-
 You coordinate 7 other agents and report to Ben. Your job is to keep the entire system running smoothly and driving closings.
 
 ## Your Agents
@@ -68,50 +68,84 @@ async function runAgent(mode = "full_cycle") {
   await logAction("agent_run_start", "success", { mode });
   console.log(`[Orchestrator] Starting ${mode} at ${new Date().toISOString()}`);
 
-  const messages = [{ role: "user", content: RUN_MODES[mode] || RUN_MODES.full_cycle }];
-  let continueLoop = true, iterations = 0;
+  try {
+    const messages = [{ role: "user", content: RUN_MODES[mode] || RUN_MODES.full_cycle }];
+    let continueLoop = true, iterations = 0;
 
-  while (continueLoop && iterations < 30) {
-    iterations++;
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-6", max_tokens: 4096,
-      system: SYSTEM_PROMPT, tools: toolDefinitions, messages,
-    });
-    messages.push({ role: "assistant", content: response.content });
+    while (continueLoop && iterations < 30) {
+      iterations++;
+      console.log(`[Orchestrator] Iteration ${iterations} — calling Anthropic API...`);
 
-    if (response.stop_reason === "tool_use") {
-      const toolResults = [];
-      for (const block of response.content) {
-        if (block.type === "tool_use") {
-          console.log(`[Orchestrator]   Tool: ${block.name}`);
-          const result = await executeTool(block.name, block.input);
-          toolResults.push({ type: "tool_result", tool_use_id: block.id, content: JSON.stringify(result) });
+      const response = await anthropic.messages.create({
+        model: "claude-sonnet-4-6",
+        max_tokens: 4096,
+        system: SYSTEM_PROMPT,
+        tools: toolDefinitions,
+        messages,
+      });
+
+      console.log(`[Orchestrator] API response: stop_reason=${response.stop_reason}, blocks=${response.content.length}`);
+      messages.push({ role: "assistant", content: response.content });
+
+      if (response.stop_reason === "tool_use") {
+        const toolResults = [];
+        for (const block of response.content) {
+          if (block.type === "tool_use") {
+            console.log(`[Orchestrator]   Tool: ${block.name}`);
+            try {
+              const result = await executeTool(block.name, block.input);
+              toolResults.push({ type: "tool_result", tool_use_id: block.id, content: JSON.stringify(result) });
+            } catch (toolErr) {
+              console.error(`[Orchestrator]   Tool ${block.name} error: ${toolErr.message}`);
+              await logAction("tool_error", "error", { tool: block.name, mode, iteration: iterations }, toolErr.message);
+              toolResults.push({ type: "tool_result", tool_use_id: block.id, content: JSON.stringify({ success: false, error: toolErr.message }), is_error: true });
+            }
+          }
         }
+        messages.push({ role: "user", content: toolResults });
+      } else {
+        continueLoop = false;
+        const text = response.content.filter(b => b.type === "text").map(b => b.text).join("\n");
+        if (text) console.log(`[Orchestrator] Summary: ${text.slice(0, 500)}`);
       }
-      messages.push({ role: "user", content: toolResults });
-    } else {
-      continueLoop = false;
-      const text = response.content.filter(b => b.type === "text").map(b => b.text).join("\n");
-      if (text) console.log(`[Orchestrator] Summary: ${text}`);
     }
-  }
 
-  const duration = Date.now() - startTime;
-  await logAction("agent_run_complete", "success", { mode, iterations, durationMs: duration }, null, duration);
-  console.log(`[Orchestrator] Done in ${(duration / 1000).toFixed(1)}s`);
+    const duration = Date.now() - startTime;
+    await logAction("agent_run_complete", "success", { mode, iterations, durationMs: duration }, null, duration);
+    console.log(`[Orchestrator] Done in ${(duration / 1000).toFixed(1)}s`);
+  } catch (err) {
+    const duration = Date.now() - startTime;
+    console.error(`[Orchestrator] FATAL ERROR in ${mode}: ${err.message}`);
+    console.error(err.stack);
+    await logAction("agent_run_error", "error", { mode, durationMs: duration, stack: err.stack?.slice(0, 500) }, err.message, duration).catch(e => console.error("[Orchestrator] Failed to log error to Supabase:", e.message));
+  }
 }
 
 async function startScheduler() {
   console.log("[Orchestrator] Scheduler started");
-  try { await runAgent("full_cycle"); } catch (e) { console.error(e.message); }
+  console.log(`[Orchestrator] ANTHROPIC_API_KEY set: ${!!process.env.ANTHROPIC_API_KEY}`);
+  console.log(`[Orchestrator] SUPABASE_URL set: ${!!process.env.SUPABASE_URL}`);
+  console.log(`[Orchestrator] SUPABASE_SERVICE_ROLE_KEY set: ${!!process.env.SUPABASE_SERVICE_ROLE_KEY}`);
+
+  // Initial full cycle
+  await runAgent("full_cycle");
 
   // Health check every 30 minutes
-  setInterval(async () => { try { await runAgent("health_check"); } catch (e) { console.error(e.message); } }, 30 * 60 * 1000);
+  setInterval(async () => {
+    await runAgent("health_check");
+  }, 30 * 60 * 1000);
 
-  // Daily report at each cycle (the agent will skip if already sent today)
-  setInterval(async () => { try { await runAgent("daily_report"); } catch (e) { console.error(e.message); } }, 12 * 60 * 60 * 1000);
+  // Daily report every 12 hours
+  setInterval(async () => {
+    await runAgent("daily_report");
+  }, 12 * 60 * 60 * 1000);
+
+  console.log("[Orchestrator] Intervals set — health_check every 30min, daily_report every 12h");
 }
 
 const mode = process.argv[2];
-if (mode === "daemon") startScheduler();
-else runAgent(mode || "full_cycle").then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); });
+if (mode === "daemon") {
+  startScheduler();
+} else {
+  runAgent(mode || "full_cycle").then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); });
+}
