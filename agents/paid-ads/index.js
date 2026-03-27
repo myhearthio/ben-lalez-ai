@@ -76,7 +76,7 @@ async function runAgent(mode = "full_cycle") {
     iterations++;
     const response = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001", max_tokens: 4096,
-      system: SYSTEM_PROMPT, tools: toolDefinitions, messages,
+      system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }], tools: toolDefinitions, messages,
     });
     
     // Track token usage
