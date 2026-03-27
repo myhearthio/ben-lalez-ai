@@ -5,41 +5,84 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1N
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-export async function fetchAgentStatus() {
-    const { data } = await supabase.from("agent_logs")
-      .select("agent_name, action, status, created_at, duration_ms")
-      .in("action", ["agent_run_complete", "agent_run_error"])
-      .order("created_at", { ascending: false })
-      .limit(50);
-    return data || [];
+// ── Agent health from agent_logs ──
+export async function fetchAgentHealth() {
+  const { data } = await supabase
+    .from("agent_logs")
+    .select("agent_name, action, status, created_at, duration_ms")
+    .in("action", ["agent_run_complete", "agent_run_error"])
+    .order("created_at", { ascending: false })
+    .limit(500);
+
+  if (!data) return {};
+
+  const health = {};
+  for (const row of data) {
+    if (!health[row.agent_name]) {
+      health[row.agent_name] = { total: 0, successes: 0, errors: 0, lastActive: null, avgMs: 0, durations: [] };
+    }
+    const h = health[row.agent_name];
+    h.total++;
+    if (row.status === "success") h.successes++;
+    if (row.status === "error") h.errors++;
+    if (!h.lastActive) h.lastActive = row.created_at;
+    if (row.duration_ms) h.durations.push(row.duration_ms);
+  }
+
+  for (const key of Object.keys(health)) {
+    const h = health[key];
+    h.rate = h.total > 0 ? ((h.successes / h.total) * 100).toFixed(1) : "0";
+    h.avgMs = h.durations.length > 0 ? Math.round(h.durations.reduce((a, b) => a + b, 0) / h.durations.length) : 0;
+  }
+
+  return health;
 }
 
-export async function fetchKPIs() {
-    const [leads, content, notifications] = await Promise.all([
-          supabase.from("lead_intelligence").select("stage, lead_score, intent_level, source, closing_value"),
-          supabase.from("content_performance").select("content_type, channel, status, published_at, performance_score, ad_spend, leads_generated").eq("status", "published"),
-          supabase.from("notification_queue").select("id, source_agent, priority, title, status, created_at").order("created_at", { ascending: false }).limit(20),
-        ]);
-    return {
-          leads: leads.data || [],
-          content: content.data || [],
-          notifications: notifications.data || [],
-    };
+// ── Notifications ──
+export async function fetchNotifications(limit = 100) {
+  const { data } = await supabase
+    .from("notification_queue")
+    .select("id, source_agent, notification_type, priority, title, message, status, channel, created_at")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  return data || [];
 }
 
-export async function fetchRecentLogs(limit = 30) {
-    const { data } = await supabase.from("agent_logs")
-      .select("agent_name, action, status, payload, error, created_at, duration_ms")
-      .order("created_at", { ascending: false })
-      .limit(limit);
-    return data || [];
+// ── Tasks ──
+export async function fetchAgentTasks() {
+  const { data } = await supabase
+    .from("agent_tasks")
+    .select("id, assigned_agent, task_type, description, status, priority, created_at")
+    .order("created_at", { ascending: false })
+    .limit(100);
+  return data || [];
 }
 
-export async function fetchContentFeed() {
-    const { data } = await supabase.from("content_performance")
-      .select("title, content_type, channel, status, published_at, performance_score, created_by_agent, external_url")
-      .eq("status", "published")
-      .order("published_at", { ascending: false })
-      .limit(20);
-    return data || [];
+// ── Team ──
+export async function fetchTeamMembers() {
+  const { data } = await supabase
+    .from("team_members")
+    .select("name, role, ytd_closings, ytd_volume, active_listings, active")
+    .eq("active", true)
+    .order("name");
+  return data || [];
+}
+
+// ── Spend ──
+export async function fetchApiSpend() {
+  const { data } = await supabase
+    .from("api_spend")
+    .select("agent_name, model, input_tokens, output_tokens, estimated_cost_usd, created_at")
+    .order("created_at", { ascending: false })
+    .limit(100);
+  return data || [];
+}
+
+// ── Save chat message ──
+export async function saveConversation(sender, agent, role, message) {
+  try {
+    await supabase.from("dashboard_conversations").insert({ sender, agent, role, message });
+  } catch (e) {
+    // silent fail — non-critical
+  }
 }
