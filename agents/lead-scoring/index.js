@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { config } from "dotenv";
 import { resolve } from "node:path";
 import { toolDefinitions, executeTool } from "./tools.js";
-import { logAction } from "./lib/supabase.js";
+import db, { logAction } from "./lib/supabase.js";
 
 config({ path: resolve(import.meta.dirname, "../../.env") });
 
@@ -83,6 +83,9 @@ function checkCredentials(agent, required) {
 async function runAgent(mode = "full_cycle") {
   if (!checkCredentials('Lead Scoring', ['ANTHROPIC_API_KEY'])) return;
 
+  // --- Token spend tracking ---
+  let _totalInputTokens = 0, _totalOutputTokens = 0, _cacheReadTokens = 0, _cacheWriteTokens = 0;
+
   const startTime = Date.now();
   const userPrompt = RUN_MODES[mode] || RUN_MODES.full_cycle;
 
@@ -106,6 +109,14 @@ async function runAgent(mode = "full_cycle") {
     });
 
     const assistantContent = response.content;
+    
+    // Track token usage
+    if (response.usage) {
+      _totalInputTokens += response.usage.input_tokens || 0;
+      _totalOutputTokens += response.usage.output_tokens || 0;
+      _cacheReadTokens += response.usage.cache_read_input_tokens || 0;
+      _cacheWriteTokens += response.usage.cache_creation_input_tokens || 0;
+    }
     messages.push({ role: "assistant", content: assistantContent });
 
     if (response.stop_reason === "tool_use") {
@@ -132,6 +143,26 @@ async function runAgent(mode = "full_cycle") {
   }
 
   const duration = Date.now() - startTime;
+  // Log API spend
+  const _inputCost = (_totalInputTokens / 1_000_000) * 1.0;
+  const _outputCost = (_totalOutputTokens / 1_000_000) * 5.0;
+  const _cacheSavings = (_cacheReadTokens / 1_000_000) * 1.0 * 0.9;
+  const _estimatedCost = _inputCost + _outputCost - _cacheSavings;
+  try {
+    await db().from("api_spend").insert({
+      agent_name: "lead_scoring",
+      model: "claude-haiku-4-5-20251001",
+      input_tokens: _totalInputTokens,
+      output_tokens: _totalOutputTokens,
+      cache_read_tokens: _cacheReadTokens,
+      cache_write_tokens: _cacheWriteTokens,
+      estimated_cost_usd: _estimatedCost,
+      duration_ms: duration,
+      run_mode: mode,
+      iterations,
+    });
+  } catch (e) { console.warn("Failed to log spend:", e.message); }
+
   await logAction("agent_run_complete", "success", { mode, iterations, durationMs: duration }, null, duration);
   console.log(`[Lead Scoring] Completed ${mode} in ${(duration / 1000).toFixed(1)}s (${iterations} iterations)`);
 }
