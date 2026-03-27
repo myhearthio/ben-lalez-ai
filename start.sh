@@ -12,7 +12,7 @@ case "$AGENT" in
     exec node agents/content-seo/index.js
     ;;
   email-nurture|email_nurture|emille_email)
-    exec node agents/email-nurture/index.js
+    exec node agents/email-nurture/index.js daemon
     ;;
   gmb-agent|gmb_agent)
     exec node agents/gmb-agent/index.js
@@ -24,7 +24,7 @@ case "$AGENT" in
     exec node agents/lead-scoring/index.js
     ;;
   notifications|notification_sms)
-    exec node agents/notifications/sms.js
+    exec node agents/notifications/sms.js process
     ;;
   paid-ads|paid_ads|peter_paid_ads)
     exec node agents/paid-ads/index.js
