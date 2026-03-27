@@ -24,7 +24,8 @@ case "$AGENT" in
     exec node agents/lead-scoring/index.js daemon
     ;;
   notifications|notification_sms)
-    exec node agents/notifications/sms.js daemon
+    echo '[start.sh] SMS agent disabled — sleeping forever'
+    exec sleep infinity
     ;;
   paid-ads|paid_ads|peter_paid_ads)
     exec node agents/paid-ads/index.js daemon
