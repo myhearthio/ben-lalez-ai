@@ -44,7 +44,24 @@ const RUN_MODES = {
   full_cycle: "Full ads cycle: monitor all campaigns, update metrics, optimize budgets, publish insights. Alert Ben for anything requiring approval.",
 };
 
+// --- Circuit Breaker: skip cycle if required credentials are missing ---
+const _cbLogged = {};
+function checkCredentials(agent, required) {
+  const missing = required.filter(k => !process.env[k]);
+  if (missing.length > 0) {
+    const key = missing.join(',');
+    if (!_cbLogged[key]) {
+      console.warn('[' + agent + '] CIRCUIT BREAKER: Missing ' + missing.join(', ') + ' - skipping cycle');
+      _cbLogged[key] = true;
+    }
+    return false;
+  }
+  return true;
+}
+
 async function runAgent(mode = "full_cycle") {
+  if (!checkCredentials('Paid Ads', ['ANTHROPIC_API_KEY'])) return;
+
   const startTime = Date.now();
   await logAction("agent_run_start", "success", { mode });
   console.log(`[Paid Ads] Starting ${mode} at ${new Date().toISOString()}`);
@@ -55,7 +72,7 @@ async function runAgent(mode = "full_cycle") {
   while (continueLoop && iterations < 25) {
     iterations++;
     const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-6", max_tokens: 4096,
+      model: "claude-haiku-4-5-20251001", max_tokens: 4096,
       system: SYSTEM_PROMPT, tools: toolDefinitions, messages,
     });
     messages.push({ role: "assistant", content: response.content });

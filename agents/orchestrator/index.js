@@ -63,7 +63,24 @@ const RUN_MODES = {
   full_cycle: "Run a complete orchestration cycle: health check all agents, review tasks, check pipeline stats, verify content output, and generate a daily report if one hasn't been sent today.",
 };
 
+// --- Circuit Breaker: skip cycle if required credentials are missing ---
+const _cbLogged = {};
+function checkCredentials(agent, required) {
+  const missing = required.filter(k => !process.env[k]);
+  if (missing.length > 0) {
+    const key = missing.join(',');
+    if (!_cbLogged[key]) {
+      console.warn('[' + agent + '] CIRCUIT BREAKER: Missing ' + missing.join(', ') + ' - skipping cycle');
+      _cbLogged[key] = true;
+    }
+    return false;
+  }
+  return true;
+}
+
 async function runAgent(mode = "full_cycle") {
+  if (!checkCredentials('Orchestrator', ['ANTHROPIC_API_KEY', 'SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'])) return;
+
   const startTime = Date.now();
   await logAction("agent_run_start", "success", { mode });
   console.log(`[Orchestrator] Starting ${mode} at ${new Date().toISOString()}`);
@@ -77,7 +94,7 @@ async function runAgent(mode = "full_cycle") {
       console.log(`[Orchestrator] Iteration ${iterations} — calling Anthropic API...`);
 
       const response = await anthropic.messages.create({
-        model: "claude-sonnet-4-6",
+        model: "claude-haiku-4-5-20251001",
         max_tokens: 4096,
         system: SYSTEM_PROMPT,
         tools: toolDefinitions,

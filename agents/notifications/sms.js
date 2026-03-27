@@ -170,17 +170,43 @@ export async function sendNotificationById(notificationId) {
 
 // --- Entry point ---
 
+// --- Daemon mode: poll for pending notifications ---
+async function startDaemon() {
+  const POLL_INTERVAL = 5 * 60 * 1000; // 5 minutes
+  console.log("[SMS] Daemon started - polling every 5 minutes");
+  
+  // Run immediately on startup
+  try {
+    await processPendingNotifications();
+  } catch (err) {
+    console.error("[SMS] Error in initial run:", err.message);
+  }
+  
+  // Then poll on interval
+  setInterval(async () => {
+    try {
+      await processPendingNotifications();
+    } catch (err) {
+      console.error("[SMS] Error in poll cycle:", err.message);
+    }
+  }, POLL_INTERVAL);
+}
+
 const command = process.argv[2];
 const arg = process.argv[3];
 
-if (command === "process") {
-  // Process all pending notifications
-  processPendingNotifications()
-    .then(() => process.exit(0))
-    .catch((err) => {
-      console.error("[SMS] Fatal:", err);
-      process.exit(1);
-    });
+if (command === "daemon" || command === "process") {
+  // Daemon mode: poll continuously (or process once for backwards compat)
+  if (command === "daemon") {
+    startDaemon();
+  } else {
+    processPendingNotifications()
+      .then(() => process.exit(0))
+      .catch((err) => {
+        console.error("[SMS] Fatal:", err);
+        process.exit(1);
+      });
+  }
 } else if (command === "send" && arg) {
   // Send a specific notification by ID
   sendNotificationById(arg)

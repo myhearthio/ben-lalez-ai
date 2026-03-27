@@ -41,7 +41,24 @@ const RUN_MODES = {
   full_cycle: "Run a full content cycle: check content count, publish a blog post if needed, then schedule social media posts. Always start with brand voice and intelligence.",
 };
 
+// --- Circuit Breaker: skip cycle if required credentials are missing ---
+const _cbLogged = {};
+function checkCredentials(agent, required) {
+  const missing = required.filter(k => !process.env[k]);
+  if (missing.length > 0) {
+    const key = missing.join(',');
+    if (!_cbLogged[key]) {
+      console.warn('[' + agent + '] CIRCUIT BREAKER: Missing ' + missing.join(', ') + ' - skipping cycle');
+      _cbLogged[key] = true;
+    }
+    return false;
+  }
+  return true;
+}
+
 async function runAgent(mode = "full_cycle") {
+  if (!checkCredentials('Content SEO', ['ANTHROPIC_API_KEY'])) return;
+
   const startTime = Date.now();
   await logAction("agent_run_start", "success", { mode });
   console.log(`[Content SEO] Starting ${mode} at ${new Date().toISOString()}`);

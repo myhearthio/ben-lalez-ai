@@ -65,7 +65,24 @@ const RUN_MODES = {
   full_cycle: "First score all unscored leads. Then rescore any stale leads. If you notice interesting patterns, publish an insight to shared_intelligence.",
 };
 
+// --- Circuit Breaker: skip cycle if required credentials are missing ---
+const _cbLogged = {};
+function checkCredentials(agent, required) {
+  const missing = required.filter(k => !process.env[k]);
+  if (missing.length > 0) {
+    const key = missing.join(',');
+    if (!_cbLogged[key]) {
+      console.warn('[' + agent + '] CIRCUIT BREAKER: Missing ' + missing.join(', ') + ' - skipping cycle');
+      _cbLogged[key] = true;
+    }
+    return false;
+  }
+  return true;
+}
+
 async function runAgent(mode = "full_cycle") {
+  if (!checkCredentials('Lead Scoring', ['ANTHROPIC_API_KEY'])) return;
+
   const startTime = Date.now();
   const userPrompt = RUN_MODES[mode] || RUN_MODES.full_cycle;
 
@@ -81,7 +98,7 @@ async function runAgent(mode = "full_cycle") {
     iterations++;
 
     const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-6",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 4096,
       system: SYSTEM_PROMPT,
       tools: toolDefinitions,

@@ -9,28 +9,28 @@ case "$AGENT" in
     exec node agents/orchestrator/index.js daemon
     ;;
   content-seo|content_seo)
-    exec node agents/content-seo/index.js
+    exec node agents/content-seo/index.js daemon
     ;;
   email-nurture|email_nurture|emille_email)
     exec node agents/email-nurture/index.js daemon
     ;;
   gmb-agent|gmb_agent)
-    exec node agents/gmb-agent/index.js
+    exec node agents/gmb-agent/index.js daemon
     ;;
   intelligence|roger)
-    exec node agents/intelligence/index.js
+    exec node agents/intelligence/index.js daemon
     ;;
   lead-scoring|lead_scoring)
-    exec node agents/lead-scoring/index.js
+    exec node agents/lead-scoring/index.js daemon
     ;;
   notifications|notification_sms)
-    exec node agents/notifications/sms.js process
+    exec node agents/notifications/sms.js daemon
     ;;
   paid-ads|paid_ads|peter_paid_ads)
-    exec node agents/paid-ads/index.js
+    exec node agents/paid-ads/index.js daemon
     ;;
   referral|referral_agent)
-    exec node agents/referral/index.js
+    exec node agents/referral/index.js daemon
     ;;
   dashboard)
     echo "[start.sh] Serving dashboard on port ${PORT:-3000}"
