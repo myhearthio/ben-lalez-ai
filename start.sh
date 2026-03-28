@@ -33,6 +33,9 @@ case "$AGENT" in
   referral|referral_agent)
     exec node agents/referral/index.js daemon
     ;;
+  preston-pr|preston_pr)
+    exec node agents/preston-pr/index.js daemon
+    ;;
   dashboard)
     echo "[start.sh] Serving dashboard on port ${PORT:-3000}"
     exec npx serve dashboard/dist -l "${PORT:-3000}" -s
