@@ -339,6 +339,12 @@ async function startScheduler() {
   // Initial full cycle
   await runAgent("full_cycle");
 
+  // Full orchestration cycle every 4 hours
+  setInterval(async () => {
+    await runAgent("full_cycle");
+  }, 4 * 60 * 60 * 1000);
+
+
   // Health check every 30 minutes
   setInterval(async () => {
     await runAgent("health_check");
@@ -349,7 +355,7 @@ async function startScheduler() {
     await runAgent("daily_report");
   }, 12 * 60 * 60 * 1000);
 
-  console.log("[Orchestrator] Intervals set — health_check every 30min, daily_report every 12h");
+  console.log("[Orchestrator] Intervals set — full_cycle every 4h, health_check every 30min, daily_report every 12h");
 }
 
 const mode = process.argv[2];
