@@ -639,6 +639,26 @@ async function runAgent(mode = "full_cycle") {
   await logAction("agent_run_start", "success", { mode });
   console.log(`[Content SEO] Starting ${mode} at ${new Date().toISOString()}`);
 
+    // Apify competitor research
+  try {
+    const apify = require('./apify-integration');
+    const accounts = ['compass','theagencyre','compasschicago','benlalezteam'];
+    for (const account of accounts) {
+      const posts = await apify.scrapeInstagram(account, 5);
+      for (const post of posts) {
+        await supabase.from('sarah_research_intelligence').insert({
+          research_type: 'competitor', platform: 'instagram',
+          account: '@' + account, post_type: post.type,
+          caption: post.caption, likes: post.likes, comments: post.comments,
+          hashtags: post.hashtags, url: post.url,
+          hook: post.caption?.split('\n')[0]?.substring(0,120),
+          raw_data: post, cycle_id: new Date().toISOString()
+        });
+      }
+    }
+    await logAction('apify_research_complete','success',{accounts});
+  } catch(e) { await logAction('apify_research_failed','error',e.message); }
+
   const messages = [{ role: "user", content: RUN_MODES[mode] || RUN_MODES.full_cycle }];
   let continueLoop = true, iterations = 0;
 
