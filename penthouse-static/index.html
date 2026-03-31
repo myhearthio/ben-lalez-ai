@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Penthouse &#8212; Ben Lalez Team</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#F7F5F1;--bg2:#fff;--bg3:#F2EFE9;--border:#E4DFD7;--border2:#CCC5BA;
+--text:#1A1814;--text2:#6B6459;--text3:#A89E93;
+--amber:#B8720E;--ambg:#FDF3E3;--ambd:#F0D5A0;
+--green:#2A7040;--grbg:#EBF5EF;
+--coral:#B84030;--cobg:#FDF0EE;
+--blue:#2855A8;--blbg:#EEF2FB;
+--purple:#5E3FB0;--teal:#0F7A6B;
+--font:'DM Sans',system-ui,sans-serif;
+--serif:'Fraunces',Georgia,serif;
+--sh:0 1px 3px rgba(0,0,0,.06)
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;overflow-x:hidden}
+/* HEADER */
+.hdr{display:flex;align-items:center;padding:0 24px;height:54px;background:var(--bg2);border-bottom:1px solid var(--border);gap:16px;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+.logo{font-family:var(--serif);font-size:17px;font-weight:300;white-space:nowrap;cursor:default}.logo em{color:var(--amber);font-style:italic}
+.persona-tabs{display:flex;gap:2px;margin-left:16px}
+.ptab{padding:6px 16px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:500;color:var(--text2);border:none;background:none;font-family:var(--font);transition:all .18s;position:relative}
+.ptab:hover{background:var(--bg3)}.ptab.active{background:var(--text);color:#fff}
+.ptab .badge{position:absolute;top:1px;right:3px;min-width:14px;height:14px;border-radius:7px;background:var(--coral);color:#fff;font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 3px}
+.hr2{margin-left:auto;display:flex;align-items:center;gap:14px}
+.live{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green);font-weight:500}
+.lp{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pg 2s infinite}
+@keyframes pg{0%,100%{box-shadow:0 0 0 0 rgba(42,112,64,.4)}50%{box-shadow:0 0 0 5px rgba(42,112,64,0)}}
+.clk{font-size:12px;color:var(--text3)}
+.rfbtn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:none;font-size:11px;color:var(--text2);cursor:pointer;font-family:var(--font)}
+.rfbtn:hover{background:var(--bg3)}
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;padding:20px 24px 0}
+.mc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;box-shadow:var(--sh);transition:all .2s}
+.mc:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.mct{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.mcl{font-size:10.5px;color:var(--text3);font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.mtr{font-size:11px;font-weight:500}.tu{color:var(--green)}.tf{color:var(--text3)}.ta{color:var(--coral)}.tw{color:var(--amber)}
+.mv{font-family:var(--serif);font-size:28px;font-weight:300;line-height:1;margin-bottom:4px}
+.mx{font-size:11.5px;color:var(--text2);line-height:1.4}
+/* BRIEF BANNER */
+.brief{margin:16px 24px 0;background:var(--ambg);border:1px solid var(--ambd);border-radius:10px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px}
+.bw{font-size:10.5px;font-weight:600;color:var(--amber);white-space:nowrap;padding-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.bt{font-size:13px;line-height:1.5;flex:1}.bt strong{font-weight:600}
+/* GRID LAYOUT */
+.grid{display:grid;grid-template-columns:1fr 360px;gap:16px;padding:16px 24px 40px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.left{display:flex;flex-direction:column;gap:16px}
+.right{display:flex;flex-direction:column;gap:16px}
+/* SECTION BOX */
+.sbox{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;box-shadow:var(--sh)}
+.sh2{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.st{font-size:13px;font-weight:600}.ss{font-size:11px;color:var(--text3)}
+.bdg{font-size:10.5px;background:rgba(184,114,14,.1);color:var(--amber);padding:2px 8px;border-radius:10px;font-weight:500}
+.bdg.gr{background:rgba(42,112,64,.1);color:var(--green)}
+/* AGENT CARDS */
+.ag{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.ac{border:1px solid var(--border);border-radius:9px;padding:0 14px 14px;cursor:pointer;transition:all .18s;background:var(--bg);position:relative;overflow:hidden}
+.ac:hover{border-color:var(--border2);background:var(--bg2);transform:translateY(-1px);box-shadow:var(--sh)}
+.acb{height:3px;border-radius:9px 9px 0 0;margin:0 -14px 12px}
+.act{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.av{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;font-family:var(--serif);font-style:italic}
+.an{font-size:13px;font-weight:500}.ar{font-size:10.5px;color:var(--text3);margin-top:1px}
+.as{display:flex;align-items:center;gap:5px;margin-bottom:6px}
+.pip{width:5px;height:5px;border-radius:50%}
+.p-h{background:var(--green)}.p-d{background:var(--amber);animation:pf 1.5s infinite}.p-e{background:var(--coral)}.p-u{background:var(--text3)}
+@keyframes pf{0%,100%{opacity:1}50%{opacity:.4}}
+.asl{font-size:10.5px;font-weight:500}
+.atk{font-size:11.5px;color:var(--text2);line-height:1.4;margin-bottom:3px}
+.ala{font-size:11px;color:var(--text3);line-height:1.3}
+.cbtn{margin-top:8px;width:100%;padding:5px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;font-size:11px;font-family:var(--font);color:var(--text2);cursor:pointer;transition:all .15s}
+.cbtn:hover{background:var(--text);color:#fff;border-color:var(--text)}
+/* INBOX */
+.inb{border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;background:var(--bg);cursor:pointer;transition:all .15s}
+.inb:hover{border-color:var(--border2);background:var(--bg2)}.inb:last-child{margin-bottom:0}
+.inb.unread{border-left:3px solid var(--amber)}
+.inbt{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.inbf{font-size:10.5px;font-weight:600;color:var(--amber)}
+.inbs{font-size:13px;font-weight:500;margin-bottom:3px;line-height:1.3}
+.inbp{font-size:11.5px;color:var(--text2);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.inbm{font-size:10.5px;color:var(--text3);margin-left:auto;flex-shrink:0}
+/* APPROVAL QUEUE */
+.qi{border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;background:var(--bg)}
+.qi.pr{border-color:#F0C0B8;background:var(--cobg)}
+.qit{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap}
+.qif{font-size:10.5px;font-weight:500}
+.qiy{font-size:10.5px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);padding:1px 7px;border-radius:4px}
+.qig{font-size:10.5px;color:var(--coral);font-weight:500}
+.qim{font-size:10.5px;color:var(--text3);margin-left:auto}
+.qin{font-size:13px;font-weight:500;margin-bottom:2px}
+.qip{font-size:11.5px;color:var(--text2);margin-bottom:10px;line-height:1.4}
+.qia{display:flex;gap:7px}
+.bok{padding:5px 14px;background:var(--grbg);border:1px solid rgba(42,112,64,.25);color:var(--green);border-radius:6px;font-size:11.5px;cursor:pointer;font-family:var(--font);font-weight:500}
+.bok:hover{background:rgba(42,112,64,.18)}
+.bno{padding:5px 14px;background:transparent;border:1px solid var(--border2);color:var(--text2);border-radius:6px;font-size:11.5px;cursor:pointer;font-family:var(--font)}
+.bno:hover{border-color:var(--coral);color:var(--coral)}
+.emp{padding:20px;text-align:center;color:var(--text3);font-size:12px}
+/* ACTIVITY FEED */
+.fi{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.fi:last-child{border-bottom:none}
+.fav{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0;font-style:italic;font-family:var(--serif)}
+.fb{flex:1;min-width:0}.fn{font-size:12px;font-weight:500}
+.fa{font-size:11.5px;color:var(--text2);line-height:1.4}.fa.al{color:var(--coral)}
+.ft{font-size:10.5px;color:var(--text3);white-space:nowrap;flex-shrink:0;padding-top:2px}
+.ferr{font-size:10.5px;color:var(--coral);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px}
+/* DIRECTIVE BAR */
+.dirbar{display:flex;gap:8px;margin-bottom:14px}
+.dirbar input{flex:1;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font);color:var(--text);outline:none}
+.dirbar input:focus{border-color:var(--border2)}
+.dirbar select{padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:var(--font);color:var(--text2);background:var(--bg2);outline:none}
+.dirbar button{padding:9px 18px;background:var(--text);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font);white-space:nowrap}
+.dirbar button:hover{opacity:.85}
+/* MESSAGES */
+.msgbar{display:flex;gap:8px;margin-bottom:14px}
+.msgbar select{padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:var(--font);color:var(--text2);background:var(--bg2);outline:none}
+.msgbar input{flex:1;padding:8px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font);color:var(--text);outline:none}
+.msgbar input:focus{border-color:var(--border2)}
+.msgbar button{padding:8px 16px;background:var(--text);color:#fff;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-family:var(--font)}
+/* INBOX DETAIL OVERLAY */
+.inbox-detail{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:150;display:flex;align-items:center;justify-content:center}
+.inbox-detail .card{background:var(--bg2);border-radius:12px;max-width:580px;width:90%;max-height:80vh;overflow-y:auto;padding:24px;box-shadow:0 12px 40px rgba(0,0,0,.18)}
+.inbox-detail .close{float:right;background:none;border:1px solid var(--border);border-radius:6px;width:28px;height:28px;font-size:16px;cursor:pointer;color:var(--text3);display:flex;align-items:center;justify-content:center}
+.inbox-detail .close:hover{background:var(--bg3)}
+.inbox-detail h3{font-size:16px;font-weight:500;margin-bottom:4px}
+.inbox-detail .from{font-size:12px;color:var(--amber);font-weight:500;margin-bottom:12px}
+.inbox-detail .body{font-size:13px;line-height:1.65;color:var(--text2);white-space:pre-wrap}
+.inbox-detail .reply-btn{margin-top:16px;padding:7px 18px;background:var(--text);color:#fff;border:none;border-radius:7px;font-size:12px;cursor:pointer;font-family:var(--font)}
+/* CHAT PANEL */
+.cpanel{position:fixed;top:0;right:0;bottom:0;width:420px;background:var(--bg2);border-left:1px solid var(--border);box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease}
+.cpanel.open{transform:translateX(0)}
+.chdr{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--border);flex-shrink:0}
+.cav2{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-family:var(--serif);font-style:italic;flex-shrink:0}
+.cnm{font-size:14px;font-weight:500;flex:1}
+.crl{font-size:11px;color:var(--text3)}
+.cclose{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:none;cursor:pointer;font-size:18px;color:var(--text3);display:flex;align-items:center;justify-content:center}
+.cclose:hover{background:var(--bg3)}
+.cmsgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:88%;line-height:1.55;font-size:13px;padding:10px 14px;border-radius:12px;white-space:pre-wrap;word-wrap:break-word}
+.msg.user{align-self:flex-end;background:var(--text);color:#fff;border-radius:12px 12px 2px 12px}
+.msg.agent{align-self:flex-start;background:var(--bg3);border:1px solid var(--border);border-radius:12px 12px 12px 2px}
+.cinput-row{display:flex;gap:8px;padding:14px 16px;border-top:1px solid var(--border);flex-shrink:0}
+.cinput{flex:1;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font);color:var(--text);outline:none;resize:none;min-height:42px;max-height:120px}
+.cinput:focus{border-color:var(--border2)}
+.csend{padding:10px 16px;background:var(--text);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font)}
+.csend:hover{opacity:.85}.csend:disabled{opacity:.4;cursor:not-allowed}
+.ldot{display:inline-flex;gap:3px;padding:2px 0}
+.ldot span{width:5px;height:5px;border-radius:50%;background:var(--text3);animation:ld 1.2s infinite}
+.ldot span:nth-child(2){animation-delay:.2s}.ldot span:nth-child(3){animation-delay:.4s}
+@keyframes ld{0%,80%,100%{transform:scale(.8);opacity:.5}40%{transform:scale(1);opacity:1}}
+</style>
+</head>
+<body>
+
+<div id="app"><div style="display:flex;height:100vh;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;color:#A89E93">Loading Penthouse...</div></div>
+
+<!-- CHAT PANEL (fixed) -->
+<div class="cpanel" id="cp">
+  <div class="chdr">
+    <div class="cav2" id="cav"></div>
+    <div><div class="cnm" id="cnm"></div><div class="crl" id="crl"></div></div>
+    <button class="cclose" onclick="closeChat()">&times;</button>
+  </div>
+  <div class="cmsgs" id="cmsgs"></div>
+  <div class="cinput-row">
+    <textarea class="cinput" id="ci" placeholder="Message..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"></textarea>
+    <button class="csend" id="csend" onclick="sendChat()">Send</button>
+  </div>
+</div>
+
+<!-- INBOX DETAIL (hidden) -->
+<div id="inbox-overlay" style="display:none"></div>
+
+<script>
+const SB='https://zilgxvcrzlxuqcktemyl.supabase.co';
+const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppbGd4dmNyemx4dXFja3RlbXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NjIxOTAsImV4cCI6MjA5MDAzODE5MH0.LeG5w1ho6gagyBwK4AY8mjvOLKFj5_LDpck8UWFkRnw';
+const PROXY=SB+'/functions/v1/claude-proxy';
+
+/* ---- AGENT COLORS ---- */
+const COLORS={
+  oliver:['#B8720E','#FDF3E3'], roger:['#0F7A6B','#E8F5F3'],
+  social_sarah:['#B84030','#FDF0EE'], peter_paid_ads:['#2855A8','#EEF2FB'],
+  emille_email:['#5E3FB0','#F2EEF9'], preston_pr:['#2855A8','#EEF2FB'],
+  webster:['#0F7A6B','#E8F5F3'], david_orchestrator:['#B8720E','#FDF3E3'],
+  remy_orchestrator:['#6B6459','#F2EFE9'], lead_scoring:['#B8720E','#FDF3E3']
+};
+function agentColor(n){return (COLORS[n]||['#6B6459','#F2EFE9'])[0]}
+function agentBg(n){return (COLORS[n]||['#6B6459','#F2EFE9'])[1]}
+
+/* ---- STATE ---- */
+let ST={
+  persona:'ben',
+  defs:[], defsMap:{},
+  health:{}, logs:[], queue:[], inbox:[], hmMsgs:[],
+  directives:[], brief:null,
+  chatAgent:null, chatMsgs:[], streaming:false,
+  unread:{ben:0,fields:0,remy:0,zach:0}
+};
+
+/* ---- API ---- */
+async function q(table,params=''){
+  const r=await fetch(SB+'/rest/v1/'+table+params,{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+  if(!r.ok)return [];return r.json();
+}
+async function patch(table,filter,body){
+  await fetch(SB+'/rest/v1/'+table+'?'+filter,{method:'PATCH',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
+}
+async function post(table,body){
+  await fetch(SB+'/rest/v1/'+table,{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(body)});
+}
+
+/* ---- HELPERS ---- */
+function ago(ts){
+  if(!ts)return 'never';
+  const d=Math.round((Date.now()-new Date(ts))/60000);
+  if(d<1)return 'just now';if(d<60)return d+'m ago';
+  if(d<1440)return Math.round(d/60)+'h ago';return Math.round(d/1440)+'d ago';
+}
+function gt(){return new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true})}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+/* ---- DATA LOADING ---- */
+async function loadAll(){
+  const cut=new Date(Date.now()-86400000).toISOString();
+  const [defs,queue,logs,inboxAll,hmMsgs,directives,brief]=await Promise.all([
+    q('agent_definitions','?select=agent_name,display_name,domain,status,primary_job,persona,owner&order=domain'),
+    q('sarah_approval_queue','?select=*&status=eq.pending&order=created_at.desc&limit=15'),
+    q('agent_logs','?select=agent_name,action,status,created_at,error&created_at=gte.'+cut+'&order=created_at.desc&limit=400'),
+    q('persona_inbox','?select=*&order=created_at.desc&limit=50'),
+    q('cowork_messages','?select=*&order=created_at.desc&limit=30'),
+    q('ben_directives','?select=*&status=eq.pending&order=created_at.desc&limit=20'),
+    q('roger_nightly_brief','?select=*&order=created_at.desc&limit=1')
+  ]);
+  const h={};
+  for(const l of(logs||[])){
+    if(!h[l.agent_name])h[l.agent_name]={t:0,e:0,last:l.created_at,act:l.action,err:null};
+    h[l.agent_name].t++;
+    if(l.status==='error'){h[l.agent_name].e++;if(!h[l.agent_name].err)h[l.agent_name].err=l.error;}
+    if(l.created_at>h[l.agent_name].last){h[l.agent_name].last=l.created_at;h[l.agent_name].act=l.action;}
+  }
+  const dm={};for(const a of(defs||[]))dm[a.agent_name]=a;
+  const ur={ben:0,fields:0,remy:0,zach:0};
+  for(const m of(inboxAll||[])){
+    if(m.status==='unread'||m.unread===true){
+      const p=(m.to_persona||'').toLowerCase();
+      if(ur[p]!==undefined)ur[p]++;
+    }
+  }
+  ST={...ST, defs:defs||[], defsMap:dm, health:h, logs:(logs||[]).slice(0,20), queue:queue||[], inbox:inboxAll||[], hmMsgs:hmMsgs||[], directives:directives||[], brief:(brief&&brief[0])||null, unread:ur};
+}
+
+/* ---- RENDER AGENT CARD ---- */
+function renderAgentCard(a){
+  const h=ST.health[a.agent_name]||{t:0,e:0,last:null,act:'No runs',err:null};
+  const rate=h.t>0?h.e/h.t:0;
+  const pc=h.t===0?'p-u':rate>=.5?'p-e':rate>=.15?'p-d':'p-h';
+  const sc=pc==='p-h'?'var(--green)':pc==='p-d'?'var(--amber)':pc==='p-e'?'var(--coral)':'var(--text3)';
+  const sl=h.t===0?'No runs':pc==='p-e'?'Errors':pc==='p-d'?'Degraded':'Healthy';
+  const col=agentColor(a.agent_name),bg=agentBg(a.agent_name);
+  const av=(a.display_name||a.agent_name)[0];
+  return `<div class="ac" onclick="openChat('${a.agent_name}')">
+    <div class="acb" style="background:${col}"></div>
+    <div class="act"><div class="av" style="background:${bg};color:${col}">${av}</div><div><div class="an">${esc(a.display_name||a.agent_name)}</div><div class="ar">${esc(a.domain||'')}</div></div></div>
+    <div class="as"><div class="pip ${pc}"></div><span class="asl" style="color:${sc}">${sl}</span><span style="margin-left:auto;font-size:10px;color:var(--text3)">${h.t} runs</span></div>
+    <div class="atk">${esc((h.act||'Waiting').replace(/_/g,' '))}</div>
+    <div class="ala">${h.last?ago(h.last):'Never run'}${h.err?`<div class="ferr">${esc(h.err.substring(0,55))}</div>`:''}</div>
+    <button class="cbtn" onclick="event.stopPropagation();openChat('${a.agent_name}')">Talk to ${esc(a.display_name||av)}</button>
+  </div>`;
+}
+
+/* ---- RENDER INBOX ITEM ---- */
+function renderInboxItem(m){
+  const unread=(m.status==='unread'||m.unread===true);
+  return `<div class="inb${unread?' unread':''}" onclick="openInbox('${m.id}')">
+    <div class="inbt"><span class="inbf">${esc(m.from_persona||m.from_name||'Agent')}</span><span class="inbm">${ago(m.created_at)}</span></div>
+    <div class="inbs">${esc(m.subject||'(No subject)')}</div>
+    <div class="inbp">${esc((m.body||'').substring(0,120))}</div>
+  </div>`;
+}
+
+/* ---- RENDER QUEUE ITEM ---- */
+function renderQueueItem(item){
+  const hook=esc((item.preview_hook||item.preview_caption||'').substring(0,120));
+  return `<div class="qi${item.priority==='urgent'?' pr':''}">
+    <div class="qit"><span class="qif" style="color:var(--coral)">Sarah</span><span class="qiy">${esc(item.content_type||'Content')}</span>${item.priority==='urgent'?'<span class="qig">Urgent</span>':''}<span class="qim">${ago(item.created_at)}</span></div>
+    <div class="qin">${esc(item.content_type||'Content')}</div>
+    <div class="qip">${hook}</div>
+    <div class="qia"><button class="bok" onclick="approveQ('${item.id}')">Approve</button><button class="bno" onclick="rejectQ('${item.id}')">Send back</button></div>
+  </div>`;
+}
+
+/* ---- RENDER FEED ITEM ---- */
+function renderFeedItem(l){
+  const col=agentColor(l.agent_name),isE=l.status==='error';
+  return `<div class="fi"><div class="fav" style="background:${col}18;color:${col}">${(l.agent_name||'?')[0].toUpperCase()}</div><div class="fb"><div class="fn">${esc(l.agent_name.replace(/_/g,' '))}</div><div class="fa${isE?' al':''}">${esc(l.action.replace(/_/g,' '))}</div>${isE&&l.error?`<div class="ferr">${esc(l.error.substring(0,70))}</div>`:''}</div><div class="ft">${ago(l.created_at)}</div></div>`;
+}
+
+/* ====== VIEW RENDERERS ====== */
+function renderBenView(){
+  const m=ST.logs.length,e=ST.logs.filter(x=>x.status==='error').length;
+  const er=m>0?Math.round(e/m*100):0;
+  const myInbox=ST.inbox.filter(x=>(x.to_persona||'').toLowerCase()==='ben');
+  const unreadInbox=myInbox.filter(x=>x.status==='unread'||x.unread===true);
+  let html=`<div class="metrics">
+    <div class="mc"><div class="mct"><span class="mcl">Agents</span><span class="mtr tu">Live</span></div><div class="mv">${ST.defs.length}</div><div class="mx">Defined in the brain</div></div>
+    <div class="mc"><div class="mct"><span class="mcl">Approval Queue</span><span class="mtr ${ST.queue.length?'tw':'tf'}">${ST.queue.length?ST.queue.length+' waiting':'Clear'}</span></div><div class="mv">${ST.queue.length}</div><div class="mx">Items needing sign-off</div></div>
+    <div class="mc"><div class="mct"><span class="mcl">Logs 24h</span><span class="mtr ${er>30?'ta':er>10?'tw':'tu'}">${er}% errors</span></div><div class="mv">${m}</div><div class="mx">${e} errors in last 24 hours</div></div>
+    <div class="mc"><div class="mct"><span class="mcl">Inbox</span><span class="mtr ${unreadInbox.length?'tw':'tf'}">${unreadInbox.length} unread</span></div><div class="mv">${unreadInbox.length}</div><div class="mx">Messages from your agents</div></div>
+    <div class="mc"><div class="mct"><span class="mcl">Directives</span><span class="mtr tf">${ST.directives.length} pending</span></div><div class="mv">${ST.directives.length}</div><div class="mx">Awaiting dispatch</div></div>
+  </div>`;
+  if(ST.brief){html+=`<div class="brief"><div class="bw">Roger Brief</div><div class="bt"><strong>${esc(ST.brief.hook_to_use_immediately||'No hook today')}</strong> &#8212; ${esc(ST.brief.top_content_pattern_today||'')}</div></div>`;}
+  html+=`<div class="grid"><div class="left">`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Post Directive</div><div class="ss">Goes to Oliver</div></div>
+    <div class="dirbar">
+      <input type="text" id="dir-title" placeholder="Directive title...">
+      <select id="dir-urgency"><option value="normal">Normal</option><option value="high">High</option><option value="critical">Critical</option></select>
+      <select id="dir-domain"><option value="marketing">Marketing</option><option value="sales">Sales</option><option value="operations">Ops</option><option value="technical">Technical</option></select>
+      <button onclick="postDirective()">Post</button>
+    </div>
+    <input type="text" id="dir-body" placeholder="Details (optional)..." style="width:100%;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font);color:var(--text);outline:none">
+  </div>`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Your Team</div><div class="ss">${ST.defs.length} agents</div></div><div class="ag">${ST.defs.map(renderAgentCard).join('')}</div></div>`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Approval Queue</div><div class="ss" id="qc">${ST.queue.length?ST.queue.length+' need sign-off':'All clear'}</div></div><div id="ql">${ST.queue.length?ST.queue.map(renderQueueItem).join(''):'<div class="emp">Nothing waiting &#8212; all clear.</div>'}</div></div>`;
+  html+=`</div><div class="right">`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Inbox</div><div class="bdg">${unreadInbox.length} unread</div></div>${myInbox.length?myInbox.slice(0,10).map(renderInboxItem).join(''):'<div class="emp">No messages yet.</div>'}</div>`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Team Messages</div><div class="ss">Internal</div></div>
+    <div class="msgbar">
+      <select id="msg-to"><option value="fields">Fields</option><option value="remy">Remy</option><option value="zach">Zach</option></select>
+      <input type="text" id="msg-body" placeholder="Message...">
+      <button onclick="sendHumanMsg()">Send</button>
+    </div>
+    ${ST.hmMsgs.slice(0,8).map(m=>`<div class="fi"><div class="fav" style="background:var(--ambg);color:var(--amber)">${(m.from_persona||'?')[0].toUpperCase()}</div><div class="fb"><div class="fn">${esc(m.from_persona||'')} &#8594; ${esc(m.to_persona||'')}</div><div class="fa">${esc((m.body||m.subject||'').substring(0,80))}</div></div><div class="ft">${ago(m.created_at)}</div></div>`).join('')}
+  </div>`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Activity</div><div class="bdg gr">Live</div></div>${ST.logs.map(renderFeedItem).join('')}</div>`;
+  html+=`</div></div>`;
+  return html;
+}
+
+function renderFieldsView(){
+  const myInbox=ST.inbox.filter(x=>(x.to_persona||'').toLowerCase()==='fields');
+  const unread=myInbox.filter(x=>x.status==='unread'||x.unread===true);
+  const myAgents=ST.defs.filter(a=>['preston_pr','social_sarah','emille_email','lead_scoring','peter_paid_ads','david_orchestrator'].includes(a.agent_name));
+  let html=`<div class="metrics">
+    <div class="mc"><div class="mct"><span class="mcl">Inbox</span><span class="mtr ${unread.length?'tw':'tf'}">${unread.length} unread</span></div><div class="mv">${unread.length}</div><div class="mx">Messages from agents</div></div>
+    <div class="mc"><div class="mct"><span class="mcl">My Agents</span><span class="mtr tu">Live</span></div><div class="mv">${myAgents.length}</div><div class="mx">Preston, Sarah, Emille, Lead Scoring</div></div>
+    <div class="mc"><div class="mct"><span class="mcl">Content Queue</span><span class="mtr ${ST.queue.length?'tw':'tf'}">${ST.queue.length} items</span></div><div class="mv">${ST.queue.length}</div><div class="mx">Sarah content needing approval</div></div>
+  </div>`;
+  html+=`<div class="grid"><div class="left">`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Your Agents</div></div><div class="ag">${myAgents.map(renderAgentCard).join('')}</div></div>`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Content Queue</div></div><div id="ql">${ST.queue.length?ST.queue.map(renderQueueItem).join(''):'<div class="emp">Nothing waiting.</div>'}</div></div>`;
+  html+=`</div><div class="right">`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Inbox</div><div class="bdg">${unread.length} unread</div></div>${myInbox.length?myInbox.slice(0,10).map(renderInboxItem).join(''):'<div class="emp">No messages.</div>'}</div>`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Activity</div><div class="bdg gr">Live</div></div>${ST.logs.slice(0,12).map(renderFeedItem).join('')}</div>`;
+  html+=`</div></div>`;
+  return html;
+}
+
+function renderRemyView(){
+  const myInbox=ST.inbox.filter(x=>(x.to_persona||'').toLowerCase()==='remy');
+  const unread=myInbox.filter(x=>x.status==='unread'||x.unread===true);
+  const errCount=ST.logs.filter(x=>x.status==='error').length;
+  const errAgents=[...new Set(ST.logs.filter(x=>x.status==='error').map(x=>x.agent_name))];
+  let html=`<div class="metrics">
+    <div class="mc"><div class="mct"><span class="mcl">Errors 24h</span><span class="mtr ${errCount>5?'ta':errCount>0?'tw':'tu'}">${errCount>0?errCount+' errors':'All clear'}</span></div><div class="mv">${errCount}</div><div class="mx">${errAgents.length} agents with errors</div></div>
+    <div class="mc"><div class="mct"><span class="mcl">Inbox</span><span class="mtr ${unread.length?'tw':'tf'}">${unread.length} unread</span></div><div class="mv">${unread.length}</div><div class="mx">Operations messages</div></div>
+    <div class="mc"><div class="mct"><span class="mcl">Total Runs</span><span class="mtr tu">24h</span></div><div class="mv">${ST.logs.length}</div><div class="mx">Agent actions logged</div></div>
+  </div>`;
+  html+=`<div class="brief"><div class="bw">Ops</div><div class="bt"><strong>Error agents:</strong> ${errAgents.length?errAgents.join(', '):'None &#8212; all clear.'}</div></div>`;
+  html+=`<div class="grid"><div class="left">`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Agent Health Overview</div></div><div class="ag">${ST.defs.map(renderAgentCard).join('')}</div></div>`;
+  html+=`</div><div class="right">`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Inbox</div><div class="bdg">${unread.length} unread</div></div>${myInbox.length?myInbox.slice(0,10).map(renderInboxItem).join(''):'<div class="emp">No messages.</div>'}</div>`;
+  const errLogs=ST.logs.filter(x=>x.status==='error');
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Error Log</div><div class="bdg" style="background:rgba(184,64,48,.1);color:var(--coral)">${errLogs.length}</div></div>${errLogs.length?errLogs.slice(0,15).map(renderFeedItem).join(''):'<div class="emp">No errors &#8212; smooth sailing.</div>'}</div>`;
+  html+=`</div></div>`;
+  return html;
+}
+
+function renderZachView(){
+  const myInbox=ST.inbox.filter(x=>(x.to_persona||'').toLowerCase()==='zach');
+  const unread=myInbox.filter(x=>x.status==='unread'||x.unread===true);
+  const jobs=ST.directives.filter(d=>d.domain==='technical'||d.created_by==='oliver');
+  let html=`<div class="metrics">
+    <div class="mc"><div class="mct"><span class="mcl">Jobs</span><span class="mtr ${jobs.length?'tw':'tf'}">${jobs.length} pending</span></div><div class="mv">${jobs.length}</div><div class="mx">Technical tasks from Oliver</div></div>
+    <div class="mc"><div class="mct"><span class="mcl">Inbox</span><span class="mtr ${unread.length?'tw':'tf'}">${unread.length} unread</span></div><div class="mv">${unread.length}</div><div class="mx">Messages from agents</div></div>
+  </div>`;
+  html+=`<div class="grid"><div class="left">`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Your Job Queue</div><div class="ss">${jobs.length} pending</div></div>`;
+  if(jobs.length){
+    html+=jobs.map(j=>`<div class="qi"><div class="qit"><span class="qif" style="color:var(--amber)">${esc(j.created_by||'system')}</span><span class="qiy">${esc(j.domain||'')}</span><span class="qig">${esc(j.urgency||'normal')}</span><span class="qim">${ago(j.created_at)}</span></div><div class="qin">${esc(j.title||'Untitled')}</div><div class="qip">${esc((j.directive||'').substring(0,200))}</div></div>`).join('');
+  } else {
+    html+='<div class="emp">No pending jobs. Nice.</div>';
+  }
+  html+=`</div>`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Talk to Agents</div></div><div class="ag">${ST.defs.slice(0,6).map(renderAgentCard).join('')}</div></div>`;
+  html+=`</div><div class="right">`;
+  html+=`<div class="sbox"><div class="sh2"><div class="st">Inbox</div><div class="bdg">${unread.length} unread</div></div>${myInbox.length?myInbox.slice(0,10).map(renderInboxItem).join(''):'<div class="emp">No messages.</div>'}</div>`;
+  html+=`</div></div>`;
+  return html;
+}
+
+/* ====== MAIN RENDER ====== */
+function render(){
+  const views={ben:renderBenView,fields:renderFieldsView,remy:renderRemyView,zach:renderZachView};
+  const viewHtml=(views[ST.persona]||renderBenView)();
+  const personas=[{id:'ben',label:'Ben'},{id:'fields',label:'Fields'},{id:'remy',label:'Remy'},{id:'zach',label:'Zach'}];
+  const tabs=personas.map(p=>{
+    const u=ST.unread[p.id]||0;
+    return `<button class="ptab${ST.persona===p.id?' active':''}" onclick="switchPersona('${p.id}')">${p.label}${u>0?`<span class="badge">${u}</span>`:''}</button>`;
+  }).join('');
+  document.getElementById('app').innerHTML=`<div>
+    <div class="hdr">
+      <div class="logo">Penthouse</div>
+      <div class="persona-tabs">${tabs}</div>
+      <div class="hr2">
+        <div class="live"><div class="lp"></div>Live</div>
+        <div class="clk">${gt()}</div>
+        <button class="rfbtn" onclick="refresh()">Refresh</button>
+      </div>
+    </div>
+    ${viewHtml}
+  </div>`;
+}
+
+/* ====== ACTIONS ====== */
+window.switchPersona=function(p){ST.persona=p;render();};
+window.refresh=async function(){await loadAll();render();};
+window.approveQ=async function(id){
+  await patch('sarah_approval_queue','id=eq.'+id,{status:'approved'});
+  ST.queue=ST.queue.filter(x=>x.id!==id);render();
+};
+window.rejectQ=async function(id){
+  await patch('sarah_approval_queue','id=eq.'+id,{status:'rejected'});
+  ST.queue=ST.queue.filter(x=>x.id!==id);render();
+};
+window.postDirective=async function(){
+  const title=document.getElementById('dir-title')?.value?.trim();
+  const body=document.getElementById('dir-body')?.value?.trim();
+  const urgency=document.getElementById('dir-urgency')?.value||'normal';
+  const domain=document.getElementById('dir-domain')?.value||'marketing';
+  if(!title)return alert('Enter a directive title');
+  await post('ben_directives',{title,directive:body||title,urgency,domain,status:'pending',created_by:ST.persona});
+  document.getElementById('dir-title').value='';
+  document.getElementById('dir-body').value='';
+  await loadAll();render();
+};
+window.sendHumanMsg=async function(){
+  const to=document.getElementById('msg-to')?.value;
+  const body=document.getElementById('msg-body')?.value?.trim();
+  if(!body)return;
+  await post('cowork_messages',{from_persona:ST.persona,to_persona:to,body,subject:body.substring(0,60),status:'unread',message_type:'text'});
+  document.getElementById('msg-body').value='';
+  await loadAll();render();
+};
+window.openInbox=async function(id){
+  const msg=ST.inbox.find(x=>x.id===id);
+  if(!msg)return;
+  if(msg.status==='unread'||msg.unread===true){
+    await patch('persona_inbox','id=eq.'+id,{status:'read',unread:false});
+    msg.status='read';msg.unread=false;
+    ST.unread[ST.persona]=Math.max(0,(ST.unread[ST.persona]||0)-1);
+    render();
+  }
+  const ol=document.getElementById('inbox-overlay');
+  ol.style.display='flex';
+  ol.innerHTML=`<div class="inbox-detail" onclick="if(event.target===this)closeInbox()"><div class="card">
+    <button class="close" onclick="closeInbox()">&times;</button>
+    <div class="from">From: ${esc(msg.from_persona||msg.from_name||'Agent')}</div>
+    <h3>${esc(msg.subject||'(No subject)')}</h3>
+    <div class="body">${esc(msg.body||'(No content)')}</div>
+    ${msg.from_persona&&ST.defsMap[msg.from_persona]?`<button class="reply-btn" onclick="closeInbox();openChat('${msg.from_persona}')">Reply via Chat</button>`:''}
+  </div></div>`;
+};
+window.closeInbox=function(){document.getElementById('inbox-overlay').style.display='none';};
+
+/* ====== CHAT ====== */
+window.openChat=function(name){
+  const a=ST.defsMap[name];if(!a)return;
+  ST.chatAgent=a;ST.chatMsgs=[];
+  const col=agentColor(name),bg=agentBg(name);
+  document.getElementById('cav').style.cssText='background:'+bg+';color:'+col;
+  document.getElementById('cav').textContent=(a.display_name||name)[0];
+  document.getElementById('cnm').textContent=a.display_name||name;
+  document.getElementById('crl').textContent=a.domain||name;
+  document.getElementById('cmsgs').innerHTML='';
+  document.getElementById('ci').value='';
+  document.getElementById('cp').classList.add('open');
+  document.getElementById('ci').focus();
+};
+window.closeChat=function(){document.getElementById('cp').classList.remove('open');};
+window.sendChat=async function(){
+  if(ST.streaming||!ST.chatAgent)return;
+  const input=document.getElementById('ci');
+  const text=input.value.trim();if(!text)return;
+  input.value='';
+  addChatMsg('user',text);
+  ST.chatMsgs.push({role:'user',content:text});
+  const msgs=document.getElementById('cmsgs');
+  const ld=document.createElement('div');ld.className='msg agent';
+  ld.innerHTML='<div class="ldot"><span></span><span></span><span></span></div>';
+  msgs.appendChild(ld);msgs.scrollTop=msgs.scrollHeight;
+  ST.streaming=true;document.getElementById('csend').disabled=true;
+  const a=ST.chatAgent;
+  const sys=`You are ${a.display_name||a.agent_name}, an AI agent on the Ben Lalez real estate team in Chicago. ${a.primary_job||''} You are speaking with ${ST.persona}. Be direct, concise, and helpful. Use your persona and expertise.`;
+  try{
+    const res=await fetch(PROXY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,system:sys,messages:ST.chatMsgs})});
+    const data=await res.json();ld.remove();
+    const reply=data.content?.[0]?.text||data.error||'No response';
+    addChatMsg('agent',reply);ST.chatMsgs.push({role:'assistant',content:reply});
+  }catch(e){ld.remove();addChatMsg('agent','Error: '+e.message);}
+  ST.streaming=false;document.getElementById('csend').disabled=false;
+};
+function addChatMsg(role,text){
+  const msgs=document.getElementById('cmsgs');
+  const d=document.createElement('div');d.className='msg '+role;d.textContent=text;
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+}
+
+/* ====== BOOT ====== */
+(async()=>{
+  try{await loadAll();render();}catch(e){document.getElementById('app').innerHTML=`<div style="padding:40px;color:var(--coral)">Error loading: ${e.message}</div>`;}
+  setInterval(async()=>{try{await loadAll();render();}catch(e){}},60000);
+})();
+</script>
+</body>
+</html>
