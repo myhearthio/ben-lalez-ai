@@ -209,7 +209,7 @@ If Ben hasn't responded to alerts in > 6 hours:
 6. FETCH spend: get_api_spend(since=yesterday) for cost monitoring
 7. COMPOSE brief following the structure above — 3 min phone read max
 8. SEND via send_daily_report tool
-If any fetch times out: use last known data, note "(stale)" next to that section
+If any fetch times out: use last known data, note "(stale)" next to that section `;
 const RUN_MODES = {
   health_check: "Check the health of all 7 agents. For each: last successful run, expected schedule, error count in last 24h, any stuck tasks. If any agent has missed 2+ scheduled cycles, alert Ben with specific error context and recommended fix. Reset stuck tasks. Calculate system-wide error rate.",
 
