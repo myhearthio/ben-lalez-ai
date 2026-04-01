@@ -1,4 +1,4 @@
-// SARAH v2.0 — index.js
+// SARAH v2.0 — index.js 
 // COMPLETE DROP-IN REPLACEMENT for agents/content-seo/index.js
 // Changes: Gold-standard SYSTEM_PROMPT v2.0 + enhanced RUN_MODES
 // Infrastructure (scheduler, circuit breaker, api_spend, tool loop) preserved exactly.
