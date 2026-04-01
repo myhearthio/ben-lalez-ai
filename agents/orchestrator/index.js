@@ -218,7 +218,6 @@ const RUN_MODES = {
   daily_report: "Generate Ben's morning brief following the Morning Brief Query Workflow. Pull: agent health, pipeline stats (hot leads with names and scores), content stats vs. targets, content calendar overdue items, Roger's latest intelligence, API spend. Format for phone reading — concise, action-first, numbered priorities. Send via send_daily_report. End with exactly what Ben should do today, in priority order.",
 
   full_cycle: "Run a complete orchestration cycle: 1) Health check all agents — flag any issues, 2) Review and prioritize all tasks using ICE scoring, 3) Check pipeline — are hot leads being followed up? Any leads >80 without recent contact?, 4) Verify content output vs. targets using BOTH get_content_stats (published) and get_content_calendar (planned), 5) Check cross-agent coordination — read_shared_intelligence to see if Roger published anything that Content/Ads should act on, 6) Check cowork inbox for messages from Remy/Fields/Ben, 7) Generate daily report if one hasn't been sent today, 8) Identify any experiments to start/stop/scale.",
-,
 
   stan_audit: "Run Systems Stan infrastructure governance audit. Stan audits credential health in integration_registry, monitors agent error patterns in agent_logs (last 24h), enforces naming conventions (SCREAMING_SNAKE_CASE for env vars, snake_case for tables and agents), and writes an infrastructure map to shared_intelligence. This is the weekly infrastructure hygiene check."
 };
