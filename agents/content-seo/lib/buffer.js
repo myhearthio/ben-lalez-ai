@@ -6,7 +6,7 @@ async function bufferFetch(path, options = {}) {
   const sep = path.includes("?") ? "&" : "?";
   const res = await fetch(`${BUFFER_BASE}${path}${sep}access_token=${BUFFER_TOKEN}`, {
     ...options,
-    headers: { "Content-Type": "application/json", ...options.headers },
+    headers: { "Content-Type": "application/x-www-form-urlencoded", ...options.headers },
   });
   if (!res.ok) throw new Error(`Buffer ${res.status}: ${await res.text()}`);
   return res.json();
@@ -26,7 +26,7 @@ export async function createUpdate({ profileIds, text, mediaUrl = null, schedule
 
   return bufferFetch("/updates/create.json", {
     method: "POST",
-    body: JSON.stringify(body),
+    body: new URLSearchParams(body).toString(),
   });
 }
 
