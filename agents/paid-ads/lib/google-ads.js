@@ -1,4 +1,4 @@
-// Google Ads API client — uses REST v16
+// Google Ads API client — uses REST v18
 const DEVELOPER_TOKEN = process.env.GOOGLE_ADS_DEVELOPER_TOKEN;
 const CLIENT_ID = process.env.GOOGLE_ADS_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_ADS_CLIENT_SECRET;
@@ -28,7 +28,7 @@ async function getAccessToken() {
 async function googleAdsFetch(query) {
   const token = await getAccessToken();
   const res = await fetch(
-    `https://googleads.googleapis.com/v16/customers/${CUSTOMER_ID}/googleAds:searchStream`,
+    `https://googleads.googleapis.com/v18/customers/${CUSTOMER_ID}/googleAds:searchStream`,
     {
       method: "POST",
       headers: {
@@ -62,7 +62,7 @@ export async function updateCampaignBudget(campaignId, budgetAmountMicros) {
   // Budget updates require the mutate endpoint
   const token = await getAccessToken();
   const res = await fetch(
-    `https://googleads.googleapis.com/v16/customers/${CUSTOMER_ID}/campaignBudgets:mutate`,
+    `https://googleads.googleapis.com/v18/customers/${CUSTOMER_ID}/campaignBudgets:mutate`,
     {
       method: "POST",
       headers: { Authorization: `Bearer ${token}`, "developer-token": DEVELOPER_TOKEN, "Content-Type": "application/json" },
@@ -73,4 +73,3 @@ export async function updateCampaignBudget(campaignId, budgetAmountMicros) {
   );
   if (!res.ok) throw new Error(`Google Ads Budget ${res.status}: ${await res.text()}`);
   return res.json();
-}
