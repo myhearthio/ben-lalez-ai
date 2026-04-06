@@ -190,7 +190,7 @@ async function startScheduler() {
 
 const mode = process.argv[2];
 if (mode === "daemon") {
-  startScheduler();
+  // startScheduler(); // DISABLED - lead_scoring service permanently retired
 } else {
   runAgent(mode || "full_cycle")
     .then(() => process.exit(0))
