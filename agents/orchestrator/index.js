@@ -7,7 +7,7 @@
 // Built from: Guillaume Cabane (Segment/Drift), Glossier community model, CMO best practices
 
 import Anthropic from "@anthropic-ai/sdk"
-import { config } from "dotenv";
+import { config } from "dotenv"
 import { resolve } from "node:path";
 import { toolDefinitions, executeTool } from "./tools.js";
 import db, { logAction } from "./lib/supabase.js";
@@ -238,7 +238,7 @@ function checkCredentials(agent, required) {
 }
 
 async function runAgent(mode = "full_cycle") {
-  if (!checkCredentials('Orchestrator', ['ANTHROPIC_API_KEY', 'SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'])) return;
+    if (!checkCredentials('Orchestrator', ['ANTHROPIC_API_KEY', 'DATABASE_URL', 'SERVICE_ROLE_KEY'])) return;
 
   // --- Token spend tracking ---
   let _totalInputTokens = 0, _totalOutputTokens = 0, _cacheReadTokens = 0, _cacheWriteTokens = 0;
@@ -334,8 +334,8 @@ async function runAgent(mode = "full_cycle") {
 async function startScheduler() {
   console.log("[Orchestrator] Scheduler started");
   console.log(`[Orchestrator] ANTHROPIC_API_KEY set: ${!!process.env.ANTHROPIC_API_KEY}`);
-  console.log(`[Orchestrator] SUPABASE_URL set: ${!!process.env.SUPABASE_URL}`);
-  console.log(`[Orchestrator] SUPABASE_SERVICE_ROLE_KEY set: ${!!process.env.SUPABASE_SERVICE_ROLE_KEY}`);
+    console.log(`[Orchestrator] DATABASE_URL set: ${!!process.env.DATABASE_URL}`);
+    console.log(`[Orchestrator] SERVICE_ROLE_KEY set: ${!!process.env.SERVICE_ROLE_KEY}`);
 
   // Initial full cycle
   await runAgent("full_cycle");
